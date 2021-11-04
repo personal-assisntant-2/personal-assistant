@@ -11,7 +11,13 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from os import environ
+from dotenv import load_dotenv
 
+load_dotenv()
+
+PASS = environ['ASSISTANT_PASS']
+SECRET_KEY = environ['ASSISTANT_SECRET_KEY']
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-m7vvj09#=mcg5gb1_p#n(n7pdusd%vw#7yj31uh2zrx4q-qieb'
+SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'addressbook.apps.AddressbookConfig',
+    'filemanager.apps.FilemanagerConfig',
+    'news.apps.NewsConfig',
+    'user.apps.UserConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -75,8 +86,14 @@ WSGI_APPLICATION = 'assistant.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'assistant_abonent',
+        'USER': 'assistant',
+        'PASSWORD': PASS,
+        'HOST': '81.17.140.55',
+        'PORT': '5432',
+        'TIME_ZONE': 'Europe/Kiev',
+        'OPTIONS': {'connect_timeout': 1},
     }
 }
 
@@ -105,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 
