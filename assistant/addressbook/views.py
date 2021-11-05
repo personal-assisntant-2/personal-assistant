@@ -96,9 +96,10 @@ def add_contact(request):
 
 
 def home(request):
+    #url = ' /deta i l / % ( p k ) d/ '
     all_abonent = Abonent.objects.all()
     template = loader.get_template("addressbook/home.html")
     context = {
-        'result': all_abonent
+        'abonents': all_abonent
     }
     return HttpResponse(template.render(context, request))

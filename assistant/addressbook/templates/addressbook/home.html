@@ -1,1 +1,25 @@
-You are at home
+{% extends 'addressbook/base.html' %}
+{% block content %}
+{% load static %}
+<style type = "text/css">
+.blok {
+    height: 500px;
+    width: 1000px;
+    background: rgb(211, 211, 211);
+    color: rgb(0, 0, 0);
+    overflow-y: scroll;
+}
+</style>
+<div class="blok">
+<table>
+{% for abonent in abonents%}
+<tr>
+    <td><a href = 'addressbook/detail/{{abonent.id}}'>{{ abonent.name }}</a></td>
+    <td>{{ abonent.phone }}</td>
+
+</tr>
+
+{% endfor%}
+</table>
+</div>
+{% endblock %}
