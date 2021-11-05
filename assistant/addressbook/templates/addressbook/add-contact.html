@@ -1,0 +1,58 @@
+{% extends 'addressbook/base.html' %}
+{% block content %}
+{% load static %}
+
+<h1>Добавить абонента</h1>
+<form action="{% url 'addressbook:add-contact' %}" method='post'>
+    {% csrf_token %}
+
+    <div>
+        <ul>
+
+            <li>
+                <label for="name">Полное имя</label>
+                <input id="name" name="name">
+            </li>
+
+            <li>
+                <label for="birthday">День рождения</label>
+                <input type='date' id="birthday" name="birthday">
+            </li>
+            <li>
+                <label for="address">Адрес</label>
+                <input id="address" name="address">
+            </li>
+
+            <li>
+                <label for="phone">Телефоны</label>
+                <input id="phone" name="phone">
+                <input id="phone" name="phone">
+                <input id="phone" name="phone">
+            </li>
+            <li>
+                <label for="email">Emails</label>
+                <input id="email" name="email">
+                <input id="email" name="email">
+                <input id="email" name="email">
+            </li>
+            <li>
+                <label for="note">Заметка</label>
+                <input id="note" name="note">
+                <label for="tag">Тэги</label>
+                <input type='search' id="tag" name="tag">
+                <input id="tag" list='tags' name="tag">
+                <datalist id='tags'>
+                    {%for el in tags%}
+                    <option value={{el}}>{{el}}</option>
+                    {%endfor%}
+                </datalist>
+            </li>
+        </ul>
+        <label for="submit">submit this transaction:</label>
+        <input type="submit" id='submit' , class="btn btn-secondary btn-block" value="submit">
+
+    </div>
+</form>
+
+
+    {% endblock %}
