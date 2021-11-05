@@ -39,7 +39,12 @@
                 <label for="note">Заметка</label>
                 <input id="note" name="note">
                 <label for="tag">Тэги</label>
-                <input type='search' id="tag" name="tag">
+                <input id="tag" list='tags' name="tag">
+                <datalist id='tags'>
+                    {%for el in tags%}
+                    <option value={{el}}>{{el}}</option>
+                    {%endfor%}
+                </datalist>
                 <input id="tag" list='tags' name="tag">
                 <datalist id='tags'>
                     {%for el in tags%}
