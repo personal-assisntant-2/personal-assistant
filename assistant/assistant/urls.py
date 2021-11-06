@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from addressbook.views import fake_user
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('fake/', fake_user)
 ]
