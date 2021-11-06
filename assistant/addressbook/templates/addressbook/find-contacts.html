@@ -1,0 +1,12 @@
+{% extends "addressbook/base.html" %}
+
+{% block title %}Find{% endblock %}
+
+
+{% block content %}
+    <form action="/addressbook/find-contacts/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Искать">
+    </form>
+{% endblock %}
