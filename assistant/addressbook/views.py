@@ -2,12 +2,27 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.template import loader
-from django.views.generic.edit import CreateView
+from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
 
 
 from .forms import AbonentForm
 from .models import Abonent, Phone, Email, Note, Tag
+
+class AbonentDetailView(DetailView):
+    model = Abonent
+    print('----')
+    #template_name = 'addressbook/detail.html'
+    context_object_name = 'abonent'
+    
+    def get_context_data(self,**kwargs):
+        #print('----', get_template_names(self))
+        context = super().get_context_data(**kwargs)
+        #print(vars(context['abonent']))
+        context['phones'] = Phone.objects.filter(abonent_id = context['abonent'].id)
+        print('-----', dir(context['phones']))
+        return context
+    
 
 def change_user():
     ''' искусственная функция для внутренного пользования
@@ -98,8 +113,13 @@ def add_contact(request):
 def home(request):
     #url = ' /deta i l / % ( p k ) d/ '
     all_abonent = Abonent.objects.all()
-    template = loader.get_template("addressbook/home.html")
-    context = {
+    #template = loader.get_template("addressbook/home.html")
+    content = {
         'abonents': all_abonent
     }
-    return HttpResponse(template.render(context, request))
+    for ab in all_abonent:
+        print(ab)
+        print(vars(ab))
+    #return HttpResponse(template.render(context, request))
+    print('-------',reverse('addressbook:home'))
+    return render(request, 'addressbook/home.html', content)

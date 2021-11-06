@@ -1,0 +1,11 @@
+{% extends 'addressbook/base.html' %}
+{% block content %}
+{% load static %}
+   <p> {{abonent.name}}</p>
+  <p>    {{abonent.birthday}}</p>
+  
+  {% for phone in phones %}
+  <p> {{phone.phone}}</p>
+  {%endfor%}
+
+{% endblock %}
