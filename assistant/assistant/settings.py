@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from os import environ
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,6 +21,7 @@ PASS = environ['ASSISTANT_PASS']
 SECRET_KEY = environ['ASSISTANT_SECRET_KEY']
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+print('------------', BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -64,7 +66,7 @@ ROOT_URLCONF = 'assistant.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'assistant', 'templates', 'assistant'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

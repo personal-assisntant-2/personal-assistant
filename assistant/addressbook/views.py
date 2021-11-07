@@ -113,6 +113,9 @@ def add_contact(request):
 def edit_contact():
     pass
 
+def birthdays():
+    pass
+
 def home(request):
     #url = ' /deta i l / % ( p k ) d/ '
     all_abonent = Abonent.objects.all()
