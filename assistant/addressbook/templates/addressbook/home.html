@@ -1,1 +1,6 @@
-You are at home
+{% extends 'addressbook/base.html' %}
+{% block content %}
+{% load static %}
+<h2> Список контактов </h2>
+{% include "addressbook/abonent_list.html" %}
+{% endblock %}
