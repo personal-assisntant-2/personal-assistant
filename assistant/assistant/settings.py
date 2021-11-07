@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'addressbook.apps.AddressbookConfig',
     'filemanager.apps.FilemanagerConfig',
     'news.apps.NewsConfig',
-    'user.apps.UserConfig',
     'users.apps.UsersConfig',
 ]
 
