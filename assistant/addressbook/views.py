@@ -20,6 +20,8 @@ class AbonentDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         #print(vars(context['abonent']))
         context['phones'] = Phone.objects.filter(abonent_id = context['abonent'].id)
+        context['emails'] = Email.objects.filter(abonent_id = context['abonent'].id)
+        context['notes'] = Note.objects.filter(abonent_id = context['abonent'].id)
         print('-----', dir(context['phones']))
         return context
     
@@ -108,7 +110,8 @@ def add_contact(request):
     print('---')
     return render(request, 'addressbook/add-contact.html', content)
     
-
+def edit_contact():
+    pass
 
 def home(request):
     #url = ' /deta i l / % ( p k ) d/ '
@@ -118,8 +121,11 @@ def home(request):
         'abonents': all_abonent
     }
     for ab in all_abonent:
-        print(ab)
-        print(vars(ab))
+        #print(ab)
+        x = ab.phones
+        print('-',x)
+        print('--',x.values())
+        print('---',dir(x))
     #return HttpResponse(template.render(context, request))
     print('-------',reverse('addressbook:home'))
     return render(request, 'addressbook/home.html', content)
