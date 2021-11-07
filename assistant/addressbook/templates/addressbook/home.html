@@ -1,6 +1,20 @@
 {% extends 'addressbook/base.html' %}
 {% block content %}
 {% load static %}
+<style>
+    label,
+    input {
+        display: block;
+    }
+
+    span.helptext {
+        display: none;
+    }
+</style>
+
+<h1>Welcome to Personal Assistant!</h1>
+
+
 <h2> Список контактов </h2>
 {% include "addressbook/abonent_list.html" %}
 {% endblock %}

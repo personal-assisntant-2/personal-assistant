@@ -35,7 +35,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
+# ADD HERE DEFINITION TO <USERS> APP
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'filemanager.apps.FilemanagerConfig',
     'news.apps.NewsConfig',
     'user.apps.UserConfig',
-
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -100,20 +100,20 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
-
+# HAS TO BE UNCOMMENTED  FOR CORRECT VALIDATION!!!!!
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    # },
 ]
 
 
@@ -140,3 +140,10 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# USED WHILE CREATE NEW USER, LOGIN, TO REDIRECT TO <dashboard>
+# WITH CHANGING NAME WHILE GREETINGS
+LOGIN_REDIRECT_URL = 'dashboard'
+
+# THE SAME AS ABOVE BUT FOR LOGOUT
+LOGOUT_REDIRECT_URL = 'dashboard'
