@@ -1,4 +1,4 @@
-{% extends 'addressbook/base.html' %}
+{% extends 'base.html' %}
 {% block content %}
 {% load static %}
 <style type="text/css">
@@ -23,6 +23,10 @@ overflow-y: scroll;
   <tr>
     <td> День рождения </td>
     <td>{{abonent.birthday}}</td>
+  </tr>
+  <tr>
+    <td> Адрес </td>
+    <td>{{abonent.address}}</td>
   </tr>
   <tr>
     <td> Телефоны </td>
