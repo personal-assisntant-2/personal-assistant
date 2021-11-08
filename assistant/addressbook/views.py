@@ -11,7 +11,6 @@ from .models import Abonent, Phone, Email, Note, Tag
 
 class AbonentDetailView(DetailView):
     model = Abonent
-    print('----')
     #template_name = 'addressbook/detail.html'
     context_object_name = 'abonent'
     
@@ -22,7 +21,6 @@ class AbonentDetailView(DetailView):
         context['phones'] = Phone.objects.filter(abonent_id = context['abonent'].id)
         context['emails'] = Email.objects.filter(abonent_id = context['abonent'].id)
         context['notes'] = Note.objects.filter(abonent_id = context['abonent'].id)
-        print('-----', dir(context['phones']))
         return context
     
 
@@ -120,19 +118,11 @@ def birthdays():
     pass
 
 def home(request):
-    #url = ' /deta i l / % ( p k ) d/ '
     all_abonent = Abonent.objects.all()
     #template = loader.get_template("addressbook/home.html")
     content = {
         'abonents': all_abonent,
-        'user' : request.user,
     }
-    for ab in all_abonent:
-        #print(ab)
-        x = ab.phones
-        print('-',x)
-        print('--',x.values())
-        print('---',dir(x))
     #return HttpResponse(template.render(context, request))
-    print('-------',reverse('addressbook:home'))
+    
     return render(request, 'addressbook/home.html', content)
