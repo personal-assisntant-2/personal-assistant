@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<style type="text/css">
+.blok {
+max-height: 300px;
+width: 700px;
+background: rgb(211, 211, 211);
+color: rgb(0, 0, 0);
+overflow-y: scroll;
+}
+</style>
+<h2>
+  Подробнее об {{abonent.name}} 
+<h5><a href='{% url "addressbook:edit-contact" abonent.pk %}'>Изменить данные контакта</a></h5>
+</h2>
+
+<table>
+  <tr> 
+    <td>Имя</td>
+    <td>{{abonent.name}}</td>
+  </tr>
+  <tr>
+    <td> День рождения </td>
+    <td>{{abonent.birthday}}</td>
+  </tr>
+  <tr>
+    <td> Адрес </td>
+    <td>{{abonent.address}}</td>
+  </tr>
+  <tr>
+    <td> Телефоны </td>
+    {% for phone in phones %}
+      <td> {{phone.phone}}</td>
+    {%endfor%}
+  </tr>
+  <tr>
+    <td> Emails </td>
+    {% for email in emails %}
+    <td> {{email.email}}</td>
+    {%endfor%}
+  </tr>
+  <tr>
+    <td> Заметки </td>
+  </tr>
+</table>
+
+<div class="blok">
+  <table>
+{% for note in notes %}
+  <td> {{note.date}}</td>
+  <td> {{note.note}}</td>
+  {% for tag in note.tags.all %}
+    <td> {{tag.tag}}</td>
+  {% endfor %}
+{% endfor %}
+</table>
+</div>
+
+{% endblock %}

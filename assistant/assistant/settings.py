@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from os import environ
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,7 +21,6 @@ PASS = environ['ASSISTANT_PASS']
 SECRET_KEY = environ['ASSISTANT_SECRET_KEY']
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -35,7 +35,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
+# ADD HERE DEFINITION TO <USERS> APP
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,8 +46,7 @@ INSTALLED_APPS = [
     'addressbook.apps.AddressbookConfig',
     'filemanager.apps.FilemanagerConfig',
     'news.apps.NewsConfig',
-    'user.apps.UserConfig',
-
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -65,7 +64,7 @@ ROOT_URLCONF = 'assistant.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'assistant', 'templates', 'assistant'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -100,20 +99,20 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
-
+# HAS TO BE UNCOMMENTED  FOR CORRECT VALIDATION!!!!!
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    # },
 ]
 
 
@@ -140,3 +139,10 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# USED WHILE CREATE NEW USER, LOGIN, TO REDIRECT TO <dashboard>
+# WITH CHANGING NAME WHILE GREETINGS
+LOGIN_REDIRECT_URL = 'dashboard'
+
+# THE SAME AS ABOVE BUT FOR LOGOUT
+LOGOUT_REDIRECT_URL = 'dashboard'

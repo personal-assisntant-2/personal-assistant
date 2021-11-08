@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+    
+<style>
+    aside {
+  float: left;
+  background: #818181;
+  
+  width: 300px;
+  height: 1000px;
+  
+}
+aside ul {
+  list-style: none;
+  padding-inline-start: 0px;
+ 
+}
+aside ul li {
+  background-color: #818181;
+  border: 4px groove #ffffff;
+  border-radius: 5px;
+  padding: 40px 20px 40px 40px;
+  
+  font-size: 20px;
+  transition: all 0.6s ease;
+}
+
+aside ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.6s ease;
+}
+
+
+aside li a:hover {
+  color: #000000;
+}
+
+header {
+  float: up;
+  background: #515151;
+  padding: 10px;
+  width: 100%; 
+}
+header ul {
+    display: inline-flex;
+  list-style: none;
+  margin: 10px;
+}
+header ul li {
+  margin: 10px 60px 10px 60px;
+
+  font-size: 20px;
+  transition: all 0.6s ease;
+}
+
+header ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.6s ease;
+}
+
+header li a:hover {
+  color: #000000;
+}
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<body>
+    <header>
+        
+            <ul>
+                <li>
+                    <a href=' {% url "addressbook:birthdays" %}'>Personal Assistant</a>
+                </li>
+                <li>
+                    <a href="">{{user.username}}</a>
+                </li>
+                <li>
+                    <a href="">Logout</a>
+                </li>
+            </ul>
+        
+    </header>
+    <aside>
+    
+        <ul>
+            <li>
+                <a  class="button-menu" href="{% url 'addressbook:home' %}">ADDRESSBOOK</a>
+            </li>
+            <li>
+                <a  class="button-menu"  href="">FILE MANAGER</a>
+            </li>
+            <li>
+                <a  class="button-menu" href="">NEWS</a>
+            </li>
+        </ul>
+    </aside>
+    
+    {% block content %}
+    {% endblock %}
+</body>

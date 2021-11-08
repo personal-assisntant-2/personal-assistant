@@ -1,1 +1,23 @@
-You are at home
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<style>
+    label,
+    input {
+        display: block;
+    }
+
+    span.helptext {
+        display: none;
+    }
+</style>
+
+<ul class="horizontal-flex">
+    <li><a  href="{% url 'addressbook:add-contact' %}">Добавить контакт</a></li>
+    <li><a  href=" {% url 'addressbook:find-contact' %}">Найти контакт</a></li>
+</ul>
+
+
+<h2> Список контактов </h2>
+{% include "addressbook/abonent_list.html" %}
+{% endblock %}

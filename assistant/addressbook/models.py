@@ -35,5 +35,5 @@ class Note(models.Model):
 
 
 class Tag(models.Model):
-    note = models.ManyToManyField(Note)
+    note = models.ManyToManyField(Note, related_name = 'tags')
     tag = models.CharField(max_length=20, unique = True)

@@ -2,12 +2,27 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.template import loader
-from django.views.generic.edit import CreateView
+from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
 
 
 from .forms import AbonentForm
 from .models import Abonent, Phone, Email, Note, Tag
+
+class AbonentDetailView(DetailView):
+    model = Abonent
+    #template_name = 'addressbook/detail.html'
+    context_object_name = 'abonent'
+    
+    def get_context_data(self,**kwargs):
+        #print('----', get_template_names(self))
+        context = super().get_context_data(**kwargs)
+        #print(vars(context['abonent']))
+        context['phones'] = Phone.objects.filter(abonent_id = context['abonent'].id)
+        context['emails'] = Email.objects.filter(abonent_id = context['abonent'].id)
+        context['notes'] = Note.objects.filter(abonent_id = context['abonent'].id)
+        return context
+    
 
 def change_user():
     ''' искусственная функция для внутренного пользования
@@ -19,6 +34,9 @@ def change_user():
     print(user.username)
     #user = authenticate(request, username=user.username, password=user.password) 
     login(request, user)
+
+def find_contact(request):
+    pass
 
 def add_contact(request):
     ''' форма добавления контакта
@@ -91,14 +109,20 @@ def add_contact(request):
         
         return redirect(reverse('addressbook:add-contact'))
     print('---')
-    return render(request, 'addressbook/add-contact.html', content)
+    return render(request, 'addressbook/add_contact.html', content)
     
+def edit_contact():
+    pass
 
+def birthdays():
+    pass
 
 def home(request):
     all_abonent = Abonent.objects.all()
-    template = loader.get_template("addressbook/home.html")
-    context = {
-        'result': all_abonent
+    #template = loader.get_template("addressbook/home.html")
+    content = {
+        'abonents': all_abonent,
     }
-    return HttpResponse(template.render(context, request))
+    #return HttpResponse(template.render(context, request))
+    
+    return render(request, 'addressbook/home.html', content)

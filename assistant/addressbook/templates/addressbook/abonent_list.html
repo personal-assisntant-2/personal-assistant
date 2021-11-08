@@ -1,0 +1,27 @@
+<style type = "text/css">
+.blok {
+    max-height: 500px;
+    width: 700px;
+    background: rgb(211, 211, 211);
+    color: rgb(0, 0, 0);
+    overflow-y: scroll;
+}
+</style>
+<div class="blok">
+<table>
+{% for abonent in abonents%}
+<tr>
+    <td><a href = " {% url 'addressbook:detail' abonent.pk %} ">{{ abonent.name }}  </a></td>
+    <td><a href=" {% url 'addressbook:detail' abonent.pk %} ">
+        {% if abonent.phones.first%} 
+            {{abonent.phones.first.phone}}
+        {% else %}
+            -------
+        {%endif%}
+    </a>        
+    </td>
+</tr>
+
+{% endfor%}
+</table>
+</div>
