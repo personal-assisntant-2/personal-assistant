@@ -9,15 +9,21 @@ from django.contrib.auth.models import User
 from .forms import AbonentForm
 from .models import Abonent, Phone, Email, Note, Tag
 
+from datetime import date, timedelta
+
 class AbonentDetailView(DetailView):
+    """built-in view
+        to view one contact from model Abonent
+        data from Phone, Email, Note are added to the standard context
+    """
     model = Abonent
     #template_name = 'addressbook/detail.html'
     context_object_name = 'abonent'
     
     def get_context_data(self,**kwargs):
-        #print('----', get_template_names(self))
+        
         context = super().get_context_data(**kwargs)
-        #print(vars(context['abonent']))
+        
         context['phones'] = Phone.objects.filter(abonent_id = context['abonent'].id)
         context['emails'] = Email.objects.filter(abonent_id = context['abonent'].id)
         context['notes'] = Note.objects.filter(abonent_id = context['abonent'].id)
@@ -39,17 +45,17 @@ def find_contact(request):
     pass
 
 def add_contact(request):
-    ''' форма добавления контакта
-    есть все поля из всех моделей.
-    имя
-    день рождения
-    адрес
-    телефон - 3
-    email - 3
-    заметка 
-    tag  - 2
-    вручную создаются записи в всех таблицах.
-    валидация еще не прописана 
+    ''' form for adding a contact
+     there are all fields from all models.
+     name
+     birthday
+     address
+     phone - 3
+     email - 3
+     the note
+     tag - 2
+     records are manually created in all tables.
+     validation not registered yet
     '''
     # список тегов нужен для автозаполнения(подсказки) в поле тегов
     tags = Tag.objects.all()
@@ -108,21 +114,49 @@ def add_contact(request):
                 tag.note.add(note)  
         
         return redirect(reverse('addressbook:add-contact'))
-    print('---')
     return render(request, 'addressbook/add_contact.html', content)
     
 def edit_contact():
     pass
+    #return render(request, 'addressbook/edit_contact.html', content)
 
-def birthdays():
-    pass
+def birthdays(request):
+    '''The first page  after authentication.
+    There will be list of friends, 
+    who has birthday in the near future
+    ordered
+    '''
+    period = 50
+    # даты будут сравниваться как кортежи (месяц, день)
+    date_begin = date.today()
+    date_end = date_begin + timedelta(days = period)
+    date_begin = (date_begin.month, date_begin.day)
+    date_end = (date_end.month, date_end.day)
+
+    abonents = Abonent.objects.filter(owner = request.user, 
+                birthday__isnull = False )
+    abonents_list = []
+    #  из полученного полного запроса переписываются в список только подходящие
+    for abonent in abonents:
+        if date_begin<(abonent.birthday.month, abonent.birthday.day)<date_end:
+            abonents_list.append({'pk': abonent.id,
+                                    'name': abonent.name,
+                                'birthday' : abonent.birthday,
+                                'short_bd': (abonent.birthday.month, abonent.birthday.day),
+                                'str_bd': abonent.birthday.strftime('%A %d %B %Y')})
+    #сортировка по (месяц, день)
+    abonents_list.sort(key=lambda el: el['short_bd'])
+    content = {
+        'abonents': abonents_list,
+    }
+    return render(request, 'addressbook/birthdays.html', content)
 
 def home(request):
-    all_abonent = Abonent.objects.all()
-    #template = loader.get_template("addressbook/home.html")
+    ''' The first page of Addressbook
+    List of all contacts of user
+    '''
+    all_abonent = Abonent.objects.filter(owner = request.user)
     content = {
         'abonents': all_abonent,
     }
-    #return HttpResponse(template.render(context, request))
-    
     return render(request, 'addressbook/home.html', content)
