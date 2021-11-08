@@ -7,7 +7,13 @@
 
 <body>
     <header>
+        <div class="horizontal-flex container"></div>
         <a class="logo" href=' {% url "addressbook:birthdays" %}'>Personal Assistant</a>
+        <ul class="horizontal-flex site-nav list">
+            <li><p>{{user.username}}</p></li>
+            <li><a href="">Logout</a></li>
+        </ul>
+        </div>
     </header>
     {% block content %}
     {% endblock %}

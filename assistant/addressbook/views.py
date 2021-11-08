@@ -37,6 +37,9 @@ def change_user():
     #user = authenticate(request, username=user.username, password=user.password) 
     login(request, user)
 
+def find_contact(request):
+    pass
+
 def add_contact(request):
     ''' форма добавления контакта
     есть все поля из всех моделей.
@@ -108,7 +111,7 @@ def add_contact(request):
         
         return redirect(reverse('addressbook:add-contact'))
     print('---')
-    return render(request, 'addressbook/add-contact.html', content)
+    return render(request, 'addressbook/add_contact.html', content)
     
 def edit_contact():
     pass
@@ -121,7 +124,8 @@ def home(request):
     all_abonent = Abonent.objects.all()
     #template = loader.get_template("addressbook/home.html")
     content = {
-        'abonents': all_abonent
+        'abonents': all_abonent,
+        'user' : request.user,
     }
     for ab in all_abonent:
         #print(ab)
