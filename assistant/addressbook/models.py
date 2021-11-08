@@ -14,6 +14,15 @@ class Abonent(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE, related_name='abonents')
 
+    def phones(self):
+        return Phone(abonent=self)
+
+    def emails(self):
+        return Email(abonent=self)
+
+    def notes(self):
+        return Note(abonent=self)
+
 
 class Phone(models.Model):
     abonent = models.ForeignKey(
@@ -35,5 +44,5 @@ class Note(models.Model):
 
 
 class Tag(models.Model):
-    note = models.ManyToManyField(Note)
+    note = models.ManyToManyField(Note, related_name='tags')
     tag = models.CharField(max_length=20, unique=True)

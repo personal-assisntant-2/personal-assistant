@@ -123,10 +123,11 @@ def find_contacts(request):
     if request.method == 'POST':
         form = FindContactsForm(request.POST)
         if form.is_valid():
-            print(form.pattern)
-            print(form.tags)
-            print(form.date)
-            return HttpResponseRedirect('/addressbook/home/')
+            res = form.cleaned_data
+            print(res['pattern'])
+            print(res['tags'])
+            print(res['date'])
+            return render(request, "addressbook/find-contacts.html", {'form': form})
     else:
         form = FindContactsForm()
 
