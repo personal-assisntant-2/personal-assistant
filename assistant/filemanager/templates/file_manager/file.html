@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div>
+    <h1>File Manager</h1>
+</div>
+
+<form action="{% url 'file_manager:file' %}" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input name='upload' type="submit" value="Upload">
+</form>
+
+{% if messages %}
+<span {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+</span>
+{% endif %}
+
+<div>
+    <h2>Users files</h2>
+
+    <form action="{% url 'file_manager:file' %}" method="get">
+        <p>Sort by category</p>
+        <select name="category_field">
+            <option value="">All categories</option>
+            {% for category in categories %}
+            {% if category == selected_category %}
+            <option value="{{category}}" selected>{{ category }}</option>
+            {% else %}
+            <option value="{{category}}">{{ category }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+        <input type="submit" value="Select">
+    </form>
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for file in list_files %}
+        <tr>
+            <td>{{ file.name }}</td>
+            <td>{{ file.size }}</td>
+            <td>
+                <form action="{% url 'file_manager:download' file.id %}" method="post">
+                    {% csrf_token %}
+                    <input name='download' type="submit" value="Download">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+
+</body>
+</html>
+
