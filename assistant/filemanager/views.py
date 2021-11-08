@@ -19,7 +19,8 @@ def file_manager_view(request):
     """
     Responsible for uploading a file, displaying uploaded, sorting files into categories.
     """
-    user = User.objects.get(pk=1) # user = request.user
+    #user = User.objects.get(pk=1) # 
+    user = request.user
 
     # Upload the file and write to the database
     if request.method == 'POST':
