@@ -4,12 +4,13 @@
 @login_required 
  @login_required(login_url='auth:login')
 '''
-from django.shortcuts import render, redirect 
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.template import loader
 from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 
 from .forms import AbonentForm, FindContactsForm
@@ -19,6 +20,7 @@ from .queries import read_abonents
 
 from datetime import date, timedelta
 
+
 class AbonentDetailView(DetailView):
     """built-in view
         to view one contact from model Abonent
@@ -27,14 +29,17 @@ class AbonentDetailView(DetailView):
     model = Abonent
     #template_name = 'addressbook/detail.html'
     context_object_name = 'abonent'
-    
-    def get_context_data(self,**kwargs):
-        
+
+    def get_context_data(self, **kwargs):
+
         context = super().get_context_data(**kwargs)
-        
-        context['phones'] = Phone.objects.filter(abonent_id = context['abonent'].id)
-        context['emails'] = Email.objects.filter(abonent_id = context['abonent'].id)
-        context['notes'] = Note.objects.filter(abonent_id = context['abonent'].id)
+
+        context['phones'] = Phone.objects.filter(
+            abonent_id=context['abonent'].id)
+        context['emails'] = Email.objects.filter(
+            abonent_id=context['abonent'].id)
+        context['notes'] = Note.objects.filter(
+            abonent_id=context['abonent'].id)
         return context
 
 
@@ -122,10 +127,12 @@ def add_contact(request):
         return redirect(reverse('addressbook:add-contact'))
 
     return render(request, 'addressbook/add_contact.html', content)
-    
+
+
 def edit_contact():
     pass
-    #return render(request, 'addressbook/edit_contact.html', content)
+    # return render(request, 'addressbook/edit_contact.html', content)
+
 
 def birthdays(request):
     '''The first page  after authentication.
@@ -136,22 +143,22 @@ def birthdays(request):
     period = 50
     # даты будут сравниваться как кортежи (месяц, день)
     date_begin = date.today()
-    date_end = date_begin + timedelta(days = period)
+    date_end = date_begin + timedelta(days=period)
     date_begin = (date_begin.month, date_begin.day)
     date_end = (date_end.month, date_end.day)
 
-    abonents = Abonent.objects.filter(owner = request.user, 
-                birthday__isnull = False )
+    abonents = Abonent.objects.filter(owner=request.user,
+                                      birthday__isnull=False)
     abonents_list = []
     #  из полученного полного запроса переписываются в список только подходящие
     for abonent in abonents:
-        if date_begin<(abonent.birthday.month, abonent.birthday.day)<date_end:
+        if date_begin < (abonent.birthday.month, abonent.birthday.day) < date_end:
             abonents_list.append({'pk': abonent.id,
-                                    'name': abonent.name,
-                                'birthday' : abonent.birthday,
-                                'short_bd': (abonent.birthday.month, abonent.birthday.day),
-                                'str_bd': abonent.birthday.strftime('%A %d %B %Y')})
-    #сортировка по (месяц, день)
+                                  'name': abonent.name,
+                                  'birthday': abonent.birthday,
+                                  'short_bd': (abonent.birthday.month, abonent.birthday.day),
+                                  'str_bd': abonent.birthday.strftime('%A %d %B %Y')})
+    # сортировка по (месяц, день)
     abonents_list.sort(key=lambda el: el['short_bd'])
     content = {
         'abonents': abonents_list,
@@ -163,12 +170,14 @@ def home(request):
     ''' The first page of Addressbook
     List of all contacts of user
     '''
-    all_abonent = Abonent.objects.filter(owner = request.user)
+    all_abonent = Abonent.objects.filter(owner=request.user)
     content = {
         'abonents': all_abonent,
     }
     return render(request, 'addressbook/home.html', content)
 
+
+@login_required()
 def find_contacts(request):
     """предоставляет форму ввода, в которую можно ввести следующие поисковые атрибуты:
     - паттерн (поиск совпадения по всем текстовым полям (имя, адрес, телефон, email, note)),
@@ -188,9 +197,10 @@ def find_contacts(request):
         form = FindContactsForm(request.POST)
         if form.is_valid():
             res = form.cleaned_data
-
-            abonents = read_abonents(
-                res['pattern'], tags=res['tags'], date_start=res['date_start'], date_stop=res['date_stop'])
+            user = request.user
+            print('user: ', user)
+            abonents = read_abonents(user,
+                                     pattern=res['pattern'], tags=res['tags'], date_start=res['date_start'], date_stop=res['date_stop'])
             print(abonents)
 
             content = {'form': form, 'abonents': abonents}
@@ -199,4 +209,3 @@ def find_contacts(request):
         form = FindContactsForm()
 
     return render(request, "addressbook/find-contacts.html", {'form': form})
-

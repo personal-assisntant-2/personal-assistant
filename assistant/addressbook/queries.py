@@ -5,7 +5,7 @@ from datetime import date
 # , date_min: date = None, date_max: date = None
 
 
-def read_abonents(pattern: str = '', tags: list = [], date_start: date = None, date_stop: date = None) -> list:
+def read_abonents(user, pattern: str = '', tags: list = [], date_start: date = None, date_stop: date = None) -> list:
     """Ищет и возвращает список экземпляров записей типа Abonent, соотвествующих параметрам поиска.
     Параметры поиска задаются паттерном 'pattern', списком tags и временным интервалом date_min ... date_max. 
     Если  pattern == '' (пустая строка - состояние по умолчанию), поиск осуществляется только с учетом 
@@ -23,15 +23,16 @@ def read_abonents(pattern: str = '', tags: list = [], date_start: date = None, d
     - date_min == date_max (тип данных - date) - в выборку попадут записи в которых временные метки равны date_min
     """
     if pattern == '':
-        results_patt = Abonent.objects.all()
+        results_patt = Abonent.objects.filter(owner=user)
     else:
         #results_patt = Abonent.objects.filter(emails__email__icontains=pattern)
-        results_patt = Abonent.objects.filter(name__icontains=pattern)
+        results = Abonent.objects.filter()(owner=user)
+        results_patt = results.filter(name__icontains=pattern)
 
-        r1 = Abonent.objects.filter(address__icontains=pattern)
-        r2 = Abonent.objects.filter(notes__note__icontains=pattern)
-        r3 = Abonent.objects.filter(phones__phone__icontains=pattern)
-        r4 = Abonent.objects.filter(emails__email__icontains=pattern)
+        r1 = results.filter(address__icontains=pattern)
+        r2 = results.filter(notes__note__icontains=pattern)
+        r3 = results.filter(phones__phone__icontains=pattern)
+        r4 = results.filter(emails__email__icontains=pattern)
 
         results_patt.union(r1, r2, r3, r4)
     if tags == []:
