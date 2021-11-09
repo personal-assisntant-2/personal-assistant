@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.template import loader
 from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 
 from .forms import AbonentForm, FindContactsForm
@@ -139,6 +140,7 @@ def home(request):
     return render(request, 'addressbook/home.html', content)
 
 
+@login_required()
 def find_contacts(request):
     """предоставляет форму ввода, в которую можно ввести следующие поисковые атрибуты:
     - паттерн (поиск совпадения по всем текстовым полям (имя, адрес, телефон, email, note)),
@@ -158,9 +160,10 @@ def find_contacts(request):
         form = FindContactsForm(request.POST)
         if form.is_valid():
             res = form.cleaned_data
-
-            abonents = read_abonents(
-                res['pattern'], tags=res['tags'], date_start=res['date_start'], date_stop=res['date_stop'])
+            user = request.user
+            print('user: ', user)
+            abonents = read_abonents(user,
+                                     pattern=res['pattern'], tags=res['tags'], date_start=res['date_start'], date_stop=res['date_stop'])
             print(abonents)
 
             content = {'form': form, 'abonents': abonents}
