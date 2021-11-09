@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from os import environ
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,7 +21,6 @@ PASS = environ['ASSISTANT_PASS']
 SECRET_KEY = environ['ASSISTANT_SECRET_KEY']
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -64,7 +64,7 @@ ROOT_URLCONF = 'assistant.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'assistant', 'templates', 'assistant'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -142,7 +142,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # USED WHILE CREATE NEW USER, LOGIN, TO REDIRECT TO <dashboard>
 # WITH CHANGING NAME WHILE GREETINGS
-LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_REDIRECT_URL = '/addressbook/birthdays'
 
 # THE SAME AS ABOVE BUT FOR LOGOUT
 LOGOUT_REDIRECT_URL = 'dashboard'

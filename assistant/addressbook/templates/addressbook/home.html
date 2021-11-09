@@ -1,4 +1,4 @@
-{% extends 'addressbook/base.html' %}
+{% extends 'base.html' %}
 {% block content %}
 {% load static %}
 <style>
@@ -11,8 +11,10 @@
         display: none;
     }
 </style>
-
-<h1>Welcome to Personal Assistant!</h1>
+<ul class="horizontal-flex">
+    <li><a  href="{% url 'addressbook:add-contact' %}">Добавить контакт</a></li>
+    <li><a  href=" {% url 'addressbook:find-contact' %}">Найти контакт</a></li>
+</ul>
 
 
 <h2> Список контактов </h2>

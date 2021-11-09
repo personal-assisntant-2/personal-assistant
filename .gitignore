@@ -169,6 +169,9 @@ cython_debug/
 pyvenv.cfg
 pip-selfcheck.json
 
+### PyCharm ###
+.idea/
+
 ### VisualStudioCode ###
 .vscode
 .vscode/*
@@ -177,6 +180,7 @@ pip-selfcheck.json
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+
 
 # Local History for Visual Studio Code
 .history/
