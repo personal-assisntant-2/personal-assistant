@@ -4,5 +4,14 @@
 
 
 <h2> Список ближайших именинников </h2>
+<table>
+{% for abonent in abonents%}
 
+<tr>
+    <td><a href='{% url "addressbook:detail" abonent.pk %}'><h3>{{ abonent.name}}</h3></a></td>
+    <td><a href='{% url "addressbook:detail" abonent.pk %}'><h3>{{abonent.str_bd}}</h3></a></td>
+</tr>
+
+{% endfor%}
+</table>
 {% endblock %}
