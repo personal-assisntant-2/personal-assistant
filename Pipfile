@@ -5,8 +5,10 @@ name = "pypi"
 
 [packages]
 python-dotenv = "*"
-django = "*"
+Django = "*"
 psycopg2-binary = "*"
+humanize = "*"
+aiohttp = "*"
 
 [dev-packages]
 
