@@ -13,6 +13,13 @@ class AbonentForm(forms.ModelForm):
         model = Abonent
         fields = ('name', 'birthday')  # , 'email')
 
+class AbonentEditForm(forms.Form):
+    name = forms.CharField(label = 'Имя')
+    birthday = forms.DateField(
+    label='день рождения', widget=forms.widgets.SelectDateWidget())
+    address = forms.CharField(label = "Адрес")
+    email = forms.EmailField(label='электронная почта', widget=forms.widgets.EmailInput())
+    
 
 class FindContactsForm(forms.Form):
     year_max = date.today().year + 1

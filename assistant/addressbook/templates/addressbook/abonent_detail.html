@@ -15,6 +15,11 @@ overflow-y: scroll;
 <h5><a href='{% url "addressbook:edit-contact" abonent.pk %}'>Изменить данные контакта</a></h5>
 </h2>
 
+  <form action="{% url 'addressbook:delete-contact' abonent.pk %}" method="post">
+    {% csrf_token %}
+    <button class="btn">Удалить контакт</button>
+  </form>
+
 <table>
   <tr> 
     <td>Имя</td>
