@@ -14,7 +14,7 @@ from .api import create_uploaded_file, normalize
 from .settings import FORMATS
 
 
-# @login_required
+@login_required
 def file_manager_view(request):
     """
     Responsible for uploading a file, displaying uploaded, sorting files into categories.
@@ -48,7 +48,7 @@ def file_manager_view(request):
     })
 
 
-# @login_required
+@login_required
 def file_download_view(request, file_id):
     """
     Responsible for downloading a file, whose id = file_id.
@@ -67,6 +67,13 @@ def file_download_view(request, file_id):
     response['Content-Disposition'] = "attachment; filename=" + normalize(file.name)
 
     return response
+
+
+@login_required
+def file_delete_view(request, file_id):
+    file = get_object_or_404(UploadedFiles, pk=file_id)
+    file.delete()
+    return redirect(reverse('file_manager:file'))
 
 
 def generates_list_of_files_by_category(selected_category: str, user):

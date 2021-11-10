@@ -1,41 +1,44 @@
 {% extends 'base.html' %}
-{% block content %}
 {% load static %}
 
-<h1>Добавить абонента</h1>
+{% block main_title %}
+    Добавить абонента
+{% endblock %}
+
+{% block content %}
 <form action="{% url 'addressbook:add-contact' %}" method='post'>
     {% csrf_token %}
 
     <div>
         <ul>
 
-            <li>
+            <li class="mb-3">
                 <label for="name">Полное имя</label>
                 <input id="name" name="name">
             </li>
 
-            <li>
+            <li class="mb-3">
                 <label for="birthday">День рождения</label>
                 <input type='date' id="birthday" name="birthday">
             </li>
-            <li>
+            <li class="mb-3">
                 <label for="address">Адрес</label>
                 <input id="address" name="address">
             </li>
 
-            <li>
+            <li class="mb-3">
                 <label for="phone">Телефоны</label>
                 <input id="phone" name="phone">
                 <input id="phone" name="phone">
                 <input id="phone" name="phone">
             </li>
-            <li>
+            <li class="mb-3">
                 <label for="email">Emails</label>
                 <input id="email" name="email">
                 <input id="email" name="email">
                 <input id="email" name="email">
             </li>
-            <li>
+            <li class="mb-3">
                 <label for="note">Заметка</label>
                 <input id="note" name="note">
                 <label for="tag">Тэги</label>
@@ -53,11 +56,11 @@
                 </datalist>
             </li>
         </ul>
-        <label for="submit">submit this transaction:</label>
-        <input type="submit" id='submit' , class="btn btn-secondary btn-block" value="submit">
+
+        <input type="submit" id='submit' class="btn btn-success" value="Submit">
 
     </div>
 </form>
 
 
-    {% endblock %}
+{% endblock %}

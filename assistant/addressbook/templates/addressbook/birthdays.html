@@ -1,15 +1,14 @@
 {% extends 'base.html' %}
-{% block content %}
 {% load static %}
 
-
-<h2> Список ближайших именинников </h2>
-<table>
+{% block main_title %}Список ближайших именинников {% endblock %}
+{% block content %}
+<table class="table">
 {% for abonent in abonents%}
 
 <tr>
-    <td><a href='{% url "addressbook:detail" abonent.pk %}'><h3>{{ abonent.name}}</h3></a></td>
-    <td><a href='{% url "addressbook:detail" abonent.pk %}'><h3>{{abonent.str_bd}}</h3></a></td>
+    <td><a href='{% url "addressbook:detail" abonent.pk %}'><h5>{{ abonent.name}}</h5></a></td>
+    <td><a href='{% url "addressbook:detail" abonent.pk %}'><h5>{{abonent.str_bd}}</h5></a></td>
 </tr>
 
 {% endfor%}

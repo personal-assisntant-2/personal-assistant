@@ -207,6 +207,7 @@ def delete_contact(request, pk):
     abonent.delete()
     return redirect(reverse('addressbook:home'))
 
+@login_required
 def birthdays(request):
     '''The first page  after authentication.
     There will be list of friends, 

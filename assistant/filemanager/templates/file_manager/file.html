@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
+
+{% block title %}File Manager{% endblock %}
+
+{% block main_title %}File Manager{% endblock %}
+
 {% block content %}
-
-<div>
-    <h1>File Manager</h1>
-</div>
-
+<hr>
 <form action="{% url 'file_manager:file' %}" enctype="multipart/form-data" method="post">
     {% csrf_token %}
     {{ form }}
-    <input name='upload' type="submit" value="Upload">
+    <input name='upload' type="submit" value="Upload" class="btn btn-success">
 </form>
 
 {% if messages %}
 <span {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
 </span>
 {% endif %}
-
-<div>
-    <h2>Users files</h2>
+<hr>
+<div class="mt-5">
 
     <form action="{% url 'file_manager:file' %}" method="get">
-        <p>Sort by category</p>
+        <span>Sort by category</span>
         <select name="category_field">
             <option value="">All categories</option>
             {% for category in categories %}
@@ -31,7 +31,7 @@
             {% endif %}
             {% endfor %}
         </select>
-        <input type="submit" value="Select">
+        <input type="submit" value="Select" class="btn btn-success">
     </form>
 
 
@@ -46,12 +46,18 @@
         <tbody>
         {% for file in list_files %}
         <tr>
-            <td>{{ file.name }}</td>
-            <td>{{ file.size }}</td>
+            <td valign="middle">{{ file.name }}</td>
+            <td valign="middle">{{ file.size }}</td>
             <td>
                 <form action="{% url 'file_manager:download' file.id %}" method="post">
                     {% csrf_token %}
-                    <input name='download' type="submit" value="Download">
+                    <button class="btn btn-outline-success">Download</button>
+                </form>
+            </td>
+            <td>
+                <form action="{% url 'file_manager:delete' file.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-danger">Delete</button>
                 </form>
             </td>
         </tr>

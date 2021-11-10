@@ -1,6 +1,10 @@
+{% extends 'base.html' %}
 
+{% block title %}News{% endblock %}
 
+{% block main_title %}Cryptocurrency rate for today{% endblock %}
 
+{% block content %}
     <div class="table-wrapper">
         <table border="1" bordercolor="lightgrey" class="table table-hover table-bordered">
             <thead>
@@ -9,21 +13,21 @@
                 <th><div class="wrap-th">
                     <img height="30" src="https://myfin.by/images/cryptoCurrency/btc.png" alt="">
                     <span class="wrap-th__text">
-                        <span>Bitcoin</span>
+                        <span>Bitcoin,</span>
                         <span>BTC</span>
                     </span>
                 </div></th>
                 <th><div class="wrap-th">
                     <img height="30" src="https://myfin.by/images/cryptoCurrency/eth.png" alt="">
                     <span class="wrap-th__text">
-                        <span>Ethereum</span>
+                        <span>Ethereum,</span>
                         <span>ETH</span>
                     </span>
                 </div></th>
                 <th><div class="wrap-th">
                     <img height="30" src="https://myfin.by/images/cryptoCurrency/bch.jpg" alt="">
                     <span class="wrap-th__text">
-                        <span>Bitcoin Cash</span>
+                        <span>Bitcoin Cash,</span>
                         <span>BCH</span>
                     </span>
                 </div></th>
@@ -93,3 +97,4 @@
             </tbody>
         </table>
     </div>
+{% endblock %}
