@@ -1,14 +1,11 @@
 <style type = "text/css">
 .blok {
-    max-height: 500px;
-    width: 700px;
-    background: rgb(211, 211, 211);
-    color: rgb(0, 0, 0);
-    overflow-y: scroll;
+    max-height: 700px;
+    overflow-y: auto;
 }
 </style>
 <div class="blok">
-<table>
+<table class="table">
 {% for abonent in abonents%}
 <tr>
     <td><a href = " {% url 'addressbook:detail' abonent.pk %} ">{{ abonent.name }}  </a></td>

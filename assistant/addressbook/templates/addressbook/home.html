@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
-{% block content %}
 {% load static %}
+
+{% block main_title %}
+    Список контактов
+{% endblock %}
+
+{% block content %}
 <style>
     label,
     input {
@@ -10,13 +15,20 @@
     span.helptext {
         display: none;
     }
+
 </style>
-<ul class="horizontal-flex">
-    <li><a  href="{% url 'addressbook:add-contact' %}">Добавить контакт</a></li>
-    <li><a  href=" {% url 'addressbook:find-contacts' %}">Найти контакт</a></li>
-</ul>
+<div class="mb-3">
+<a href="{% url 'addressbook:add-contact' %}">
+    <button type="button" class="btn btn-outline-primary">
+        Добавить контакт
+    </button>
+</a>
+<a href=" {% url 'addressbook:find-contacts' %}">
+    <button type="button" class="btn btn-outline-primary">
+        Найти контакт
+    </button>
+</a>
+</div>
 
-
-<h2> Список контактов </h2>
 {% include "addressbook/abonent_list.html" %}
 {% endblock %}
