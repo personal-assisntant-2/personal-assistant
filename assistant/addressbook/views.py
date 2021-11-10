@@ -112,12 +112,25 @@ def add_contact(request):
             for tag in tags_list:
                 tag.note.add(note)
        
-        return redirect(reverse('addressbook:add-contact'))
+        return redirect(reverse('addressbook:detail', kwargs= {'pk' : abonent.id }))
     
     return render(request, 'addressbook/add_contact.html', context)
 
 
 def edit_contact(request, pk):
+    ''' Edit contact
+    possible :  change name
+                change address
+                delete address
+                change birthday
+                add new phone
+                change phone
+                delete phone
+                add new email
+                change email
+                delete email
+                add new note
+    '''
     context = {}
     context['abonent'] = Abonent.objects.get(id=pk)
     context['phones'] = Phone.objects.filter(abonent_id=pk)
@@ -129,23 +142,70 @@ def edit_contact(request, pk):
         # считываем данные с реквеста и сразу записываем в словарь
         # иначе теряются телефоны, и почты, остается только один, из последного поля
         data = dict(request.POST)
+        print(data)
         # если нет имени, форма возвращается пустая
         if not data['name'][0]:
             return redirect(reverse('addressbook:edit-contact'))
         
         # апдейтится запись в Аbonent
-
+        Abonent.objects.update_or_create(id = pk, defaults = {
+                              'name': data['name'][0],
+                              'birthday': data['birthday'][0],
+                              'address': data['address'][0]})
         
-        return render(request, 'addressbook/edit_contact.html', context)
+        # апдейтятся записи в Phone
+        for i, phone in enumerate(context['phones']):
+            if data['phone'][i] :
+                if data['phone'][i] != phone.phone :
+                    ph = Phone.objects.update_or_create(id = phone.id, defaults = 
+                                    {'phone' : data['phone'][i],
+                                    'abonent':context['abonent']})
+                    print(ph)
+            else:
+                #если поле ввода оказалось пустым, то значит его удалили
+                # удаляем эту запись из таблицы по id
+                el = Phone.objects.get(id = phone.id)
+                el.delete()
+        
+        if data['new_phone'][0] :
+            ph = Phone.objects.create(phone = data['new_phone'][0],
+                                abonent=context['abonent'])
+
+        # апдейтятся записи в Email
+        print(data)
+        for i, email in enumerate(context['emails']):
+            if data['email'][i] :
+                if data['email'][i] != email.email:
+                    em = Email.objects.update_or_create(id = email.id, defaults = 
+                                    {'email' : data['email'][i],
+                                    'abonent':context['abonent']})
+                
+            else:
+                #если поле ввода оказалось пустым, то значит его удалили
+                # удаляем эту запись из таблицы по id
+                el = Email.objects.get(id = email.id)
+                el.delete()
+        
+        if data['new_email'][0] :
+            ph = Email.objects.create(email = data['new_email'][0],
+                                abonent=context['abonent'])
+
+        print(1)
+        return redirect(reverse('addressbook:detail', kwargs= {'pk' : context['abonent'].id }))
 
     else:
-        
+        print(2)
         return render(request, 'addressbook/edit_contact.html', context)
     print(3)
     return render(request, "addressbook/edit_contact.html", context)
 
     # return render(request, 'addressbook/edit_contact.html', content)
 
+def delete_contact(request, pk):
+    abonent = Abonent.objects.get(id=pk)
+    print('-------', pk, abonent)
+    abonent.delete()
+    return redirect(reverse('addressbook:home'))
 
 def birthdays(request):
     '''The first page  after authentication.
