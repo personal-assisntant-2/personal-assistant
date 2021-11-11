@@ -9,19 +9,22 @@
 </style>
 <div class="blok">
 <table>
-{% for abonent in abonents%}
-<tr>
-    <td><a href = " {% url 'addressbook:detail' abonent.pk %} ">{{ abonent.name }}  </a></td>
-    <td><a href=" {% url 'addressbook:detail' abonent.pk %} ">
-        {% if abonent.phones.first%} 
-            {{abonent.phones.first.phone}}
-        {% else %}
-            -------
-        {%endif%}
-    </a>        
-    </td>
-</tr>
 
-{% endfor%}
+{% if abonents %}
+    {% for abonent in abonents%}
+    <tr>
+        <td><a href = " {% url 'addressbook:detail' abonent.pk %} ">{{ abonent.name }}  </a></td>
+        <td><a href=" {% url 'addressbook:detail' abonent.pk %} ">
+            {% if abonent.phones.first%} 
+                {{abonent.phones.first.phone}}
+            {% else %}
+                -------
+            {%endif%}
+        </a>        
+        </td>
+    </tr>
+
+    {% endfor%}
+{% endif %}
 </table>
 </div>

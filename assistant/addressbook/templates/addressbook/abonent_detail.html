@@ -52,14 +52,17 @@ overflow-y: scroll;
 
 <div class="blok">
   <table>
-{% for note in notes %}
-  <td> {{note.date}}</td>
-  <td> {{note.note}}</td>
-  {% for tag in note.tags.all %}
-    <td> {{tag.tag}}</td>
-  {% endfor %}
-{% endfor %}
-</table>
+    
+    {% for note in notes %}
+      <tr>
+        <td> {{note.date}}</td>
+        <td> {{note.note}}</td>
+        {% for tag in note.tags.all %}
+            <td> #{{tag.tag}}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+  </table>
 </div>
 
 {% endblock %}

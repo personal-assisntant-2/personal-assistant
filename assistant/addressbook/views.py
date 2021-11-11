@@ -15,8 +15,9 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import AbonentEditForm, FindContactsForm
 from .models import Abonent, Phone, Email, Note, Tag
-from .queries import read_abonents
-
+from .queries import read_abonents, get_date_month_day
+from .creating import create_phones, create_emails, create_note
+from .updating import update_phones, update_emails
 
 from datetime import date, timedelta
 
@@ -40,9 +41,10 @@ class AbonentDetailView(DetailView):
             abonent_id=context['abonent'].id)
         context['notes'] = Note.objects.filter(
             abonent_id=context['abonent'].id)
+        print('-------', context)
         return context
 
-
+@login_required
 def add_contact(request):
     ''' form for adding a contact
      there are all fields from all models.
@@ -73,50 +75,26 @@ def add_contact(request):
             name=data['name'][0],
             birthday=data['birthday'][0],
             address=data['address'][0])
+        
         # создаются записи в Phone
-        for el in data['phone']:
-            print('phone', el)
-            if el:
-                ph = Phone.objects.create(
-                    abonent_id=abonent.id,
-                    phone=int(el)
-                )
+        create_phones(abonent=abonent,
+                    out_phones=data['phone'] )
+        
         # создаются записи в Email
-        for el in data['email']:
-            print('email', el)
-            if el:
-                em = Email.objects.create(
-                    abonent_id=abonent.id,
-                    email=el
-                )
-        # если заметки есть, то добавляем заметку в таблицу  Note
-        if data['note']:
-            note = Note.objects.create(
-                abonent_id=abonent.id,
-                note=data['note'][0]
-            )
-            # создаем список тегов из формы, чтобы потом к ним привязать заметку
-            tags_list = []
-            for el in data['tag']:
-                # поле тега может быть пустым, тогда пропускаем его
-                if el:
-                    # если тега нет в таблице  Tag  , то создаем там запись
-                    if el not in context['tags']:
-                        tags_list.append(Tag.objects.create(tag=el))
-                    else:
-                        # если такой тег есть в таблице, то находим его и запоминаем
-                        # чтобы потом с ним связать заметку
-                        tag = Tag.objects.get(tag=el)
-                        tags_list.append(tag)
-            # связываем все теги с заметкой
-            for tag in tags_list:
-                tag.note.add(note)
-       
+        create_emails(abonent=abonent,
+                    out_emails=data['email'] )
+        
+        # Добавляем заметку в таблицу  Note
+        create_note(abonent=abonent,
+                        out_note=data['note'][0], 
+                        in_tags=context['tags'],
+                        out_tags=data['tag']  )
+
         return redirect(reverse('addressbook:detail', kwargs= {'pk' : abonent.id }))
     
     return render(request, 'addressbook/add_contact.html', context)
 
-
+@login_required
 def edit_contact(request, pk):
     ''' Edit contact
     possible :  change name
@@ -135,6 +113,7 @@ def edit_contact(request, pk):
     context['abonent'] = Abonent.objects.get(id=pk)
     context['phones'] = Phone.objects.filter(abonent_id=pk)
     context['emails'] = Email.objects.filter(abonent_id=pk)
+    print('________', context)
     # список тегов нужен для автозаполнения(подсказки) в поле тегов
     tags = Tag.objects.all()
     context['tags'] = [tag.tag for tag in tags]
@@ -148,97 +127,64 @@ def edit_contact(request, pk):
             return redirect(reverse('addressbook:edit-contact'))
         
         # апдейтится запись в Аbonent
+        
         Abonent.objects.update_or_create(id = pk, defaults = {
                               'name': data['name'][0],
                               'birthday': data['birthday'][0],
                               'address': data['address'][0]})
         
         # апдейтятся записи в Phone
-        for i, phone in enumerate(context['phones']):
-            if data['phone'][i] :
-                if data['phone'][i] != phone.phone :
-                    ph = Phone.objects.update_or_create(id = phone.id, defaults = 
-                                    {'phone' : data['phone'][i],
-                                    'abonent':context['abonent']})
-                    print(ph)
-            else:
-                #если поле ввода оказалось пустым, то значит его удалили
-                # удаляем эту запись из таблицы по id
-                el = Phone.objects.get(id = phone.id)
-                el.delete()
+        update_phones(abonent=context['abonent'],
+                    in_phones=context['phones'], 
+                    out_phones=data.get('phone', []) )
         
-        if data['new_phone'][0] :
-            ph = Phone.objects.create(phone = data['new_phone'][0],
-                                abonent=context['abonent'])
+        # создание нового телефона из списка new_phone
+        create_phones(abonent=context['abonent'],
+                    out_phones=data['new_phone'] )
 
         # апдейтятся записи в Email
-        print(data)
-        for i, email in enumerate(context['emails']):
-            if data['email'][i] :
-                if data['email'][i] != email.email:
-                    em = Email.objects.update_or_create(id = email.id, defaults = 
-                                    {'email' : data['email'][i],
-                                    'abonent':context['abonent']})
-                
-            else:
-                #если поле ввода оказалось пустым, то значит его удалили
-                # удаляем эту запись из таблицы по id
-                el = Email.objects.get(id = email.id)
-                el.delete()
+        update_emails(abonent=context['abonent'],
+                    in_emails=context['emails'], 
+                    out_emails=data.get('email',[]) )
         
-        if data['new_email'][0] :
-            ph = Email.objects.create(email = data['new_email'][0],
-                                abonent=context['abonent'])
-
+         # создание нового email  из списка new_email
+        create_emails(abonent=context['abonent'],
+                    out_emails=data['new_email'] )
+        
+        # Добавляем заметку в таблицу  Note
+        create_note(abonent=context['abonent'],
+                        out_note=data['note'][0], 
+                        in_tags=context['tags'],
+                        out_tags=data['tag']  )
         print(1)
         return redirect(reverse('addressbook:detail', kwargs= {'pk' : context['abonent'].id }))
-
-    else:
-        print(2)
-        return render(request, 'addressbook/edit_contact.html', context)
-    print(3)
+    print(2, '!!!!!!',context)
     return render(request, "addressbook/edit_contact.html", context)
 
-    # return render(request, 'addressbook/edit_contact.html', content)
-
+@login_required
 def delete_contact(request, pk):
+    ''' only delete one abonent from Abonent
+    reaction by press button in temaplate 'abonent_datail'
+    '''
     abonent = Abonent.objects.get(id=pk)
-    print('-------', pk, abonent)
     abonent.delete()
     return redirect(reverse('addressbook:home'))
 
-def birthdays(request):
+@login_required
+def birthdays(request, period=50):
     '''The first page  after authentication.
     There will be list of friends, 
     who has birthday in the near future
     ordered
     '''
-    period = 50
     # даты будут сравниваться как кортежи (месяц, день)
-    date_begin = date.today()
-    date_end = date_begin + timedelta(days=period)
-    date_begin = (date_begin.month, date_begin.day)
-    date_end = (date_end.month, date_end.day)
+    abonents_list = get_date_month_day(period, owner = request.user)
+    
+    content = { 'abonents': abonents_list,  }
 
-    abonents = Abonent.objects.filter(owner=request.user,
-                                      birthday__isnull=False)
-    abonents_list = []
-    #  из полученного полного запроса переписываются в список только подходящие
-    for abonent in abonents:
-        if date_begin < (abonent.birthday.month, abonent.birthday.day) < date_end:
-            abonents_list.append({'pk': abonent.id,
-                                  'name': abonent.name,
-                                  'birthday': abonent.birthday,
-                                  'short_bd': (abonent.birthday.month, abonent.birthday.day),
-                                  'str_bd': abonent.birthday.strftime('%A %d %B %Y')})
-    # сортировка по (месяц, день)
-    abonents_list.sort(key=lambda el: el['short_bd'])
-    content = {
-        'abonents': abonents_list,
-    }
     return render(request, 'addressbook/birthdays.html', content)
 
-
+@login_required
 def home(request):
     ''' The first page of Addressbook
     List of all contacts of user
