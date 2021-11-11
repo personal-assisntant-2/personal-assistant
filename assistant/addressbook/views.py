@@ -41,7 +41,7 @@ class AbonentDetailView(DetailView):
             abonent_id=context['abonent'].id)
         context['notes'] = Note.objects.filter(
             abonent_id=context['abonent'].id)
-        print('-------', context)
+        print('------list-', context)
         return context
 
 @login_required

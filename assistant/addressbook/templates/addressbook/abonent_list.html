@@ -7,21 +7,8 @@
 <div class="blok">
 
 <table class="table">
-{% for abonent in abonents%}
-<tr>
-    <td><a href = " {% url 'addressbook:detail' abonent.pk %} ">{{ abonent.name }}  </a></td>
-    <td><a href=" {% url 'addressbook:detail' abonent.pk %} ">
-        {% if abonent.phones.first%} 
-            {{abonent.phones.first.phone}}
-        {% else %}
-            -------
-        {%endif%}
-    </a>        
-    </td>
-</tr>
-
-{% if abonents %}
-    {% for abonent in abonents%}
+{%if abonents%}
+{% for abonent in abonents%}    
     <tr>
         <td><a href = " {% url 'addressbook:detail' abonent.pk %} ">{{ abonent.name }}  </a></td>
         <td><a href=" {% url 'addressbook:detail' abonent.pk %} ">
@@ -36,5 +23,7 @@
 
     {% endfor%}
 {% endif %}
+
 </table>
+
 </div>
