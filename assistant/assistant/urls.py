@@ -21,6 +21,7 @@ urlpatterns = [
     path('', include("users.urls")),
     path('addressbook/', include('addressbook.urls', namespace='addressbook')),
     path('file_manager/', include('filemanager.urls', namespace='file_manager')),
+    path('news/', include('news.urls', namespace='news')),
 ]
 
 

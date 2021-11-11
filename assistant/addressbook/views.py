@@ -172,6 +172,7 @@ def delete_contact(request, pk):
 
 @login_required
 def birthdays(request, period=50):
+
     '''The first page  after authentication.
     There will be list of friends, 
     who has birthday in the near future

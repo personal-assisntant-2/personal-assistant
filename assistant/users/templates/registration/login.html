@@ -1,14 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Hello{% endblock %}
+
+{% block main_title %}Login{% endblock %}
 
 {% block content %}
-<h2>Login</h2>
 
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Login">
+    <input class="btn btn-success" type="submit" value="Login">
 </form>
 
-<a href="{% url 'dashboard' %}">Back to dashboard</a>
-<br>
-<a href="{% url 'register' %}">Register</a>
+<a class="btn btn-link mt-3" href="{% url 'dashboard' %}">Back to dashboard</a>
 {% endblock %}
