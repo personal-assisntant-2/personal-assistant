@@ -1,6 +1,8 @@
+from typing import List, Dict
 from .models import Abonent, Phone, Email, Note, Tag
 from django.db.models import Q
-from datetime import date
+from datetime import date, timedelta
+
 
 # , date_min: date = None, date_max: date = None
 
@@ -26,7 +28,7 @@ def read_abonents(user, pattern: str = '', tags: list = [], date_start: date = N
         results_patt = Abonent.objects.filter(owner=user)
     else:
         #results_patt = Abonent.objects.filter(emails__email__icontains=pattern)
-        results = Abonent.objects.filter()(owner=user)
+        results = Abonent.objects.filter(owner=user)
         results_patt = results.filter(name__icontains=pattern)
 
         r1 = results.filter(address__icontains=pattern)
@@ -74,5 +76,28 @@ def read_abonents(user, pattern: str = '', tags: list = [], date_start: date = N
 
     return results_patt_tags_date
 
+def get_date_month_day(period : int, owner)->List[Dict]:
+    ''' query abonenets by date in the range 
+    from today to plus 'period' days
+    dates will compared as tuples(month , day)
+    '''
+    # даты будут сравниваться как кортежи (месяц, день)
+    date_begin = date.today()
+    date_end = date_begin + timedelta(days=period)
+    date_begin = (date_begin.month, date_begin.day)
+    date_end = (date_end.month, date_end.day)
 
-#
+    abonents = Abonent.objects.filter(owner=owner,
+                                    birthday__isnull=False)
+    abonents_list = []
+    #  из полученного полного запроса переписываются в список только подходящие
+    for abonent in abonents:
+        if date_begin < (abonent.birthday.month, abonent.birthday.day) < date_end:
+            abonents_list.append({'pk': abonent.id,
+                                'name': abonent.name,
+                                'birthday': abonent.birthday,
+                                'short_bd': (abonent.birthday.month, abonent.birthday.day),
+                                'str_bd': abonent.birthday.strftime('%A %d %B %Y')})
+    # сортировка по (месяц, день)
+    abonents_list.sort(key=lambda el: el['short_bd'])
+    return abonents_list
