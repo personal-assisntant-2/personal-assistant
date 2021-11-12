@@ -9,6 +9,8 @@ Django = "*"
 psycopg2-binary = "*"
 humanize = "*"
 aiohttp = "*"
+gunicorn = "*"
+django-heroku = "*"
 
 [dev-packages]
 

@@ -14,6 +14,7 @@ from pathlib import Path
 from os import environ
 import os
 from dotenv import load_dotenv
+import django_heroku
 
 load_dotenv()
 
@@ -146,3 +147,5 @@ LOGIN_REDIRECT_URL = '/addressbook/birthdays'
 
 # THE SAME AS ABOVE BUT FOR LOGOUT
 LOGOUT_REDIRECT_URL = 'dashboard'
+# Activate Django-Heroku.
+django_heroku.settings(locals())
