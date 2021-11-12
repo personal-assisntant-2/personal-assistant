@@ -239,7 +239,7 @@ def birthdays(request):
     }
     return render(request, 'addressbook/birthdays.html', content)
 
-
+@login_required
 def home(request):
     ''' The first page of Addressbook
     List of all contacts of user
