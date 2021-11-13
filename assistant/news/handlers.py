@@ -6,7 +6,7 @@ import humanize
 TIMEOUT = 7
 
 
-#  myfin.by ################################################################
+'''#  myfin.by ################################################################
 async def parse_data_myfin(data):
     """
     Parses the response text (https://myfin.by/crypto-rates/{...})
@@ -125,4 +125,4 @@ def handler_result(results):
         else:
             result_no_exception.append(result)
     bitcoin, ethereum, bitcoin_cash = result_no_exception
-    return {'bitcoin': bitcoin, 'ethereum': ethereum, 'bitcoin_cash': bitcoin_cash}
+    return {'bitcoin': bitcoin, 'ethereum': ethereum, 'bitcoin_cash': bitcoin_cash}'''

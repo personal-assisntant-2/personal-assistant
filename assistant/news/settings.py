@@ -2,7 +2,7 @@ import functools
 
 from .handlers import client_bitinfo, client_bitstat, client_myfin
 
-
+'''
 # Resources
 URL_BITCOIN_MYFIN = 'https://myfin.by/crypto-rates/bitcoin'
 URL_ETHEREUM_MYFIN = 'https://myfin.by/crypto-rates/ethereum'
@@ -42,4 +42,4 @@ handlers = {
         ]
     ),
 }
-
+'''

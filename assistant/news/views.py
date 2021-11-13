@@ -3,7 +3,7 @@ from .settings import handlers
 import asyncio
 
 
-async def new_view(request):
+'''async def new_view(request):
     """
     Requests the actual information from the resources specified in "handlers", if the response status is 200 - parses
     it and returns it, otherwise - "".
@@ -21,7 +21,7 @@ async def new_view(request):
     for index, key in enumerate(handlers):
         context[key] = list_context[index]
 
-    return render(request, 'news/news.html', context)
+    return render(request, 'news/news.html', context)'''
 
 
 
