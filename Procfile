@@ -1,1 +1,1 @@
-web: gunicorn .\assistant\assistant.wsgi
+web: gunicorn personal-assistant.wsgi
